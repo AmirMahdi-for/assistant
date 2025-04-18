@@ -1,6 +1,10 @@
 package config
 
 import (
+	"fmt"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -59,4 +63,26 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return config, nil
+}
+
+// ConnectDatabase establishes a connection to the database using environment variables
+func ConnectDatabase() (*gorm.DB, error) {
+	// Load config
+	config, err := LoadConfig()
+	if err != nil {
+		log.Fatal("Error loading .env file", err)
+	}
+
+	// Set up the DSN (Data Source Name)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		config.DBUsername, config.DBPassword, config.DBHost, config.DBPort, config.DBDatabase)
+
+	// Connect to the database
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	}
+
+	log.Println("Database connection successful")
+	return db, nil
 }

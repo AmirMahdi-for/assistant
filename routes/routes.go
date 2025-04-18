@@ -1,9 +1,11 @@
 package routes
 
 import (
+	"assistant/controllers"
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterRoutes(router *gin.Engine) {
-	// We will register message routes here later
+func SetupRoutes(router *gin.Engine) {
+
+	router.POST("/store", controllers.Store)
 }

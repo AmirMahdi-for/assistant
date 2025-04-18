@@ -2,31 +2,38 @@ package main
 
 import (
 	"assistant/config"
+	"assistant/models"
 	"assistant/routes"
-	"fmt"
-	"log"
-
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func main() {
 	// Load configuration
-	cfg, err := config.LoadConfig()
+	_, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	// Print a config value (for testing)
-	fmt.Println("DB Host:", cfg.DBHost)
+	// check database connection
+	db, err := config.ConnectDatabase()
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
+	//migrate
+	if err := db.AutoMigrate(&models.Message{}); err != nil {
+		log.Fatalf("Failed to migrate models: %v", err)
+	}
 
 	// Initialize Gin router
 	router := gin.Default()
 
 	// Load all routes
-	routes.RegisterRoutes(router)
+	routes.SetupRoutes(router)
 
 	// Start server
-	if err := router.Run(":7001"); err != nil {
+	if err := router.Run(":7007"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
