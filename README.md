@@ -1,4 +1,4 @@
-# Shopping Assistant - Go Migration (Step-by-Step)
+# Assistant - Go Migration (Step-by-Step)
 
 This project is a step-by-step migration of the Shopping Assistant backend from Laravel to Go, starting with the message storing feature using the MVC pattern and the Gin framework.
 
@@ -18,5 +18,7 @@ This project is a step-by-step migration of the Shopping Assistant backend from 
 Inside your project folder, run the following:
 
 ```bash
-go mod init shopping-assistant
+go mod init assistant
 go get -u github.com/gin-gonic/gin
+go get github.com/joho/godotenv
+
