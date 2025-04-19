@@ -2,7 +2,6 @@ package main
 
 import (
 	"assistant/config"
-	"assistant/models"
 	"assistant/routes"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -22,12 +21,9 @@ func main() {
 	}
 
 	//migrate
-	if err := db.AutoMigrate(&models.Message{}); err != nil {
-		log.Fatalf("Failed to migrate models: %v", err)
-	}
-
-	//messageRepo := repositories.MessageRepository()
-	//messageController := controllers.MessageController(messageRepo)
+	//if err := db.AutoMigrate(&models.Message{}); err != nil {
+	//	log.Fatalf("Failed to migrate models: %v", err)
+	//}
 
 	// Initialize Gin router
 	router := gin.Default()
