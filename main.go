@@ -26,11 +26,14 @@ func main() {
 		log.Fatalf("Failed to migrate models: %v", err)
 	}
 
+	//messageRepo := repositories.MessageRepository()
+	//messageController := controllers.MessageController(messageRepo)
+
 	// Initialize Gin router
 	router := gin.Default()
 
 	// Load all routes
-	routes.SetupRoutes(router)
+	routes.SetupRoutes(router, db)
 
 	// Start server
 	if err := router.Run(":7007"); err != nil {

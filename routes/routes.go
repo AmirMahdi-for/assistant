@@ -2,10 +2,14 @@ package routes
 
 import (
 	"assistant/controllers"
+	"assistant/middleware"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func SetupRoutes(router *gin.Engine) {
+func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
-	router.POST("/store", controllers.Store)
+	api := router.Group("/")
+	api.Use(middleware.CheckLogin(db))
+	api.POST("/store", controllers.Store)
 }
