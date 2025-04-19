@@ -10,8 +10,9 @@ import (
 
 func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
-	repo := repositories.NewMessageRepository()
-	controller := controllers.NewMessageController(repo)
+	msgRepo := repositories.NewMessageRepository()
+	convRepo := repositories.NewConversationRepository()
+	controller := controllers.NewMessageController(msgRepo, convRepo)
 
 	api := router.Group("/")
 	api.Use(middleware.CheckLogin(db))

@@ -7,16 +7,19 @@ import (
 )
 
 type MessageController struct {
-	repo repositories.MessageRepository
+	MessageRepo repositories.MessageRepository
+	ConvRepo    repositories.ConversationRepository
 }
 
-func NewMessageController(repo repositories.MessageRepository) *MessageController {
-	return &MessageController{repo: repo}
+func NewMessageController(msgRepo repositories.MessageRepository, repository repositories.ConversationRepository) *MessageController {
+	return &MessageController{MessageRepo: msgRepo, ConvRepo: repository}
 }
 
 func (mc *MessageController) Store(c *gin.Context) {
-	result := mc.repo.StoreMessage()
+	result := mc.MessageRepo.StoreMessage()
+	con := mc.ConvRepo.CreateConversation()
 	c.JSON(http.StatusOK, gin.H{
-		"message": result,
+		"message":      result,
+		"conversation": con,
 	})
 }
