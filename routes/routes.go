@@ -11,7 +11,7 @@ import (
 func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
 	msgRepo := repositories.NewMessageRepository()
-	convRepo := repositories.NewConversationRepository()
+	convRepo := repositories.NewConversationRepository(db)
 	controller := controllers.NewMessageController(msgRepo, convRepo)
 
 	api := router.Group("/")
